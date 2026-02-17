@@ -1,79 +1,65 @@
-# Firestore Structure – Skill Sphere
 
-## Users Collection
-users
+Firestore Structure – Skill Sphere
 
-Subcollection:
-users/{userId}/reflections
+---
 
-## Skills Collection
-skills
+### 1️⃣ Users Collection
 
-## Groups Collection
-groups
-
-## Relationships
-
-1️⃣ Users Collection
-
-Collection: users
+**Collection:** `users`
 
 Each document ID = Firebase Authentication UID
 
-Fields:
+**Fields:**
+- **name** (string)
+- **email** (string)
+- **role** (string: "learner" or "mentor")
+- **createdAt** (timestamp)
+- **progress** (object or number)
 
-name (string)
-email (string)
-role (string: "learner" or "mentor")
-createdAt (timestamp)
-progress (object or number)
-
-Subcollection:
-users/{userId}/reflections
+**Subcollection:**
+- `users/{userId}/reflections`
 
 Each reflection document contains:
+	- **skillId** (string)
+	- **text** (string)
+	- **createdAt** (timestamp)
 
-skillId (string)
-text (string)
-createdAt (timestamp)
+**Relationship:**
+- One user → many reflections
+- One user → can join many groups
 
-Relationship:
+---
 
-One user → many reflections
-One user → can join many groups
+### 2️⃣ Skills Collection
 
-2️⃣ Skills Collection
+**Collection:** `skills`
 
-Collection: skills
+**Fields:**
+- **title** (string)
+- **description** (string)
+- **sdgNumbers** (array of numbers, e.g. `[4, 8]`)
+- **impactStatement** (string)
+- **createdAt** (timestamp)
 
-Fields:
+**Relationship:**
+- One skill → many reflections
+- One skill → many learning groups
 
-title (string)
-description (string)
-sdgNumbers (array of numbers, e.g. [4, 8])
-impactStatement (string)
-createdAt (timestamp)
+---
 
-Relationship:
+### 3️⃣ Groups Collection
 
-One skill → many reflections
-One skill → many learning groups
+**Collection:** `groups`
 
-3️⃣ Groups Collection
+**Fields:**
+- **title** (string)
+- **skillId** (string reference to skills)
+- **mentorId** (string reference to users)
+- **members** (array of userIds)
+- **meetingTime** (string)
+- **createdAt** (timestamp)
 
-Collection: groups
-
-Fields:
-
-title (string)
-skillId (string reference to skills)
-mentorId (string reference to users)
-members (array of userIds)
-meetingTime (string)
-createdAt (timestamp)
-
-Relationship:
-
-One mentor → many groups
-One group → many members
-One skill → many groups
+**Relationship:**
+- One mentor → many groups
+- One group → many members
+- One skill → many groups
